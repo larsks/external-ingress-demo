@@ -1,0 +1,11 @@
+<network>
+  <name>cluster</name>
+  <forward mode='open'/>
+  <bridge name='br-cluster' stp='on' delay='0'/>
+  <ip address='192.168.89.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.89.10' end='192.168.89.200'/>
+    </dhcp>
+  </ip>
+</network>
+

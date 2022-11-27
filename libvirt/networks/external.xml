@@ -1,0 +1,11 @@
+<network>
+  <name>external</name>
+  <forward mode='open'/>
+  <bridge name='br-external' stp='on' delay='0'/>
+  <ip address='100.64.0.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='100.64.0.10' end='100.64.0.200'/>
+    </dhcp>
+  </ip>
+</network>
+

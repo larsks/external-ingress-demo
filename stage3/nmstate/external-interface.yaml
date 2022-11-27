@@ -1,0 +1,42 @@
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: external-interface
+spec:
+  nodeSelector: 
+    node-role.kubernetes.io/worker: "" 
+  desiredState:
+    interfaces:
+      - name: eth1
+        description: External interface
+        type: ethernet
+        state: up
+        ipv4:
+          dhcp: true
+          enabled: true
+          auto-routes: false
+
+#    # This entire routing configuration won't work because nmstate
+#    # refuses to apply static routes to interfaces that have been
+#    # configured dynamically (e.g., using DHCP).
+#    routes:
+#      config:
+#        - destination: 0.0.0.0/0
+#          next-hop-address: 100.64.0.1
+#          next-hop-interface: enp7s0
+#          table-id: 200
+#    route-rules:
+#      config:
+#        ## The suppress-prefixlen option is not currently supported by nmstate (see [1]),
+#        ## but is necessary on multi-node clusters if we expect to be able
+#        ## to access servicec exposed on the public network from internal
+#        ## addresses.
+#        ##
+#        ## [1]: https://github.com/nmstate/nmstate/issues/2114
+#        ##
+#        #- priority: 200
+#        #  route-table: main
+#        #  suppress-prefixlen: 0
+#        - priority: 210
+#          ip-from: 100.64.0.0/24
+#          route-table: 200

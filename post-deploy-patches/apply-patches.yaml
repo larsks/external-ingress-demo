@@ -1,0 +1,51 @@
+#!/usr/bin/env ansible-playbook
+
+- hosts: localhost
+  gather_facts: false
+  collections:
+    - kubernetes.core
+  tasks:
+    - name: Get list of nodes
+      set_fact:
+        nodes: >-
+          {{ (lookup('pipe', 'kubectl get nodes -o json')|from_json)['items'] }}
+
+    # Apply label "router=external" to all nodes in the cluster (which
+    # is fine for the demo, but in practice you would probably use some
+    # subset of the available nodes).
+    - name: Apply node labels
+      command:
+        argv:
+          - kubectl
+          - label
+          - node/{{ item.metadata.name }}
+          - router=external
+      loop: "{{ nodes }}"
+      loop_control:
+        label: "{{ item.metadata.name }}"
+
+    - name: Apply strategic merge patches
+      command:
+        argv:
+          - kubectl
+          - patch
+          - -f
+          - "{{ item }}"
+          - --patch-file
+          - "{{ item }}"
+          - --type
+          - strategic
+      loop: "{{ query('fileglob', 'patches/*.patch.yaml') }}"
+
+    - name: Apply JSONPatch patches
+      command:
+        argv:
+          - kubectl
+          - patch
+          - -f
+          - "{{ item.replace('jsonpatch', 'target') }}"
+          - --patch-file
+          - "{{ item }}"
+          - --type
+          - json
+      loop: "{{ query('fileglob', 'patches/*.jsonpatch.yaml') }}"

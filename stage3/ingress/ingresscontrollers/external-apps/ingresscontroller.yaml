@@ -1,0 +1,19 @@
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  name: external-apps
+spec:
+  domain: external.openshift.virt
+  defaultCertificate:
+    name: external-apps-certificate
+  endpointPublishingStrategy:
+    type: LoadBalancerService
+    loadBalancer:
+      scope: External
+  nodePlacement:
+    nodeSelector:
+      matchLabels:
+        router: "external"
+  routeSelector:
+    matchLabels:
+      router: "external"

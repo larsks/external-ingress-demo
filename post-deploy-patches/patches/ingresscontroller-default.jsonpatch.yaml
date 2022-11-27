@@ -1,0 +1,9 @@
+# Prevent internal ingress controller from managing external routes.
+- op: add
+  path: /spec/routeSelector
+  value:
+    matchExpressions:
+      - key: router
+        operator: NotIn
+        values:
+          - external

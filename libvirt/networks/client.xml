@@ -1,0 +1,11 @@
+<network>
+  <name>client</name>
+  <forward mode='open'/>
+  <bridge name='br-client' stp='on' delay='0'/>
+  <ip address='192.168.97.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.97.10' end='192.168.97.200'/>
+    </dhcp>
+  </ip>
+</network>
+

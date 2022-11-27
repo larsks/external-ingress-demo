@@ -1,0 +1,16 @@
+variant: openshift
+version: 4.11.0
+metadata:
+  name: external-ingress-routes
+  labels:
+    machineconfiguration.openshift.io/role: "master"
+storage:
+  files:
+    - path: /etc/nftables/external-ingress.nft
+      mode: 0644
+      contents:
+        local: external-ingress.nft
+    - path: /etc/NetworkManager/dispatcher.d/external-ingress-routes
+      mode: 0755
+      contents:
+        local: external-ingress-routes.sh
