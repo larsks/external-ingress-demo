@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
 - kubernetes-nmstate-operator
 - metallb-operator
+- patch-operator
