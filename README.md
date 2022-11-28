@@ -24,11 +24,10 @@
     kubectl apply -k stage3
     ```
 
-4. Apply the post-deploy patches:
+4. Deploy the patches;
 
     ```
-    cd post-deploy-patches
-    ansible-playbook apply-patches.yaml
+    kubectl apply -k patches
     ```
 
 5. Deploy the demo:
